@@ -4,6 +4,7 @@ import Renderer from './Renderer';
 import EntityContainer from './EntityContainer';
 import Engine from './Engine';
 import EntityConfigs from './Config/EntityConfigs';
+import Entity from './Entity';
 
 EntityContainer.Set(EntityConfigs);
 
@@ -18,6 +19,8 @@ window.onload = function () {
 	const entities = EntityContainer.All();
 
 	const engine = Engine.Make(game_map, entities, renderer);
+
+	Entity.SetEngine(engine);
 
 	engine.start();
 };
