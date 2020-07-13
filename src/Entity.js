@@ -2,6 +2,8 @@ import CONFIG from './Config/Config';
 import Sprite from './Sprite';
 
 export default class Entity {
+	static engine = {};
+
 	constructor (id, url, game_loop, movement, width, height) {
 		this.id        = id;
 		this.collision = true;
@@ -15,10 +17,9 @@ export default class Entity {
 	}
 
 	move (deltaX, deltaY, facing) {
-		let other_entities = Entity.entity_list.filter((entity) => entity.id !== this.id && entity.collision);
 		let collisions     = false;
 
-		other_entities.forEach((entity) => {
+		this.other_entities.forEach((entity) => {
 			if (Entity.CollidesWith(this, entity, deltaX, deltaY)) {
 				collisions = true;
 			}
@@ -38,6 +39,10 @@ export default class Entity {
 		this.movement.facing = facing;
 	}
 
+	get other_entities () {
+		return Entity.engine.entities.filter((entity) => entity.id !== this.id && entity.collision);
+	}
+
 	static Make (id, url, game_loop, movement = {position:{x:0,y:0}, facing:CONFIG.FACING.DOWN, speed:1}, width = 16, height = 18) {
 		return new Entity(id, url, game_loop, movement, width, height);
 	}
@@ -49,32 +54,7 @@ export default class Entity {
 			   entity_one.movement.position.y + deltaY + entity_one.sprite.dimensions.scaled_height > entity_two.movement.position.y
 	}
 
-	static SetEntityList (entity_list) {
-		Entity.entityList = entity_list;
-	}
-
-	static get entity_list () {
-		if (Entity.hasOwnProperty('entityList')) {
-			return Entity.entityList;
-		} else {
-			Entity.SetEntityList([]);
-		}
-		return Entity.entityList;
-	}
-
-	static AddEnitityToList (entity) {
-		if (Entity.hasOwnProperty('entityList')) {
-			Entity.enityList.push(entity);
-		} else {
-			Entity.SetEntityList([entity]);
-		}
-		return true;
-	}
-
-	static RemoveEntityFromList (id) {
-		if (Entity.hasOwnProperty('entityList')) {
-			let index = Entity.entityList.findIndex((entity) => entity.id === id);
-			Entity.entityList.splice(index, 1);
-		}
+	static SetEngine (engine) {
+		Entity.engine = engine;
 	}
 }
