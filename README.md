@@ -106,11 +106,11 @@ npm install npm@latest -g
 
 ### Installation
  
-1. Clone the repo
+<!-- 1. Clone the repo
 ```sh
 git clone https://github.com/github_username/repo.git
-```
-2. Install NPM packages
+``` -->
+Install NPM packages
 ```sh
 npm install
 npm run dev
