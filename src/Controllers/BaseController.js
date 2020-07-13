@@ -1,6 +1,8 @@
 import CONFIG from '../Config/Config';
 
 export default class BaseController {
+	static engine = {};
+
 	constructor (entity) {
 		this.entity = entity;
 	}
@@ -28,5 +30,9 @@ export default class BaseController {
 		if (!this.entity.has_moved) {
 			this.entity.sprite.cycle_loop_index = 0;
 		}
+	}
+
+	static SetEngine (engine) {
+		this.engine = engine;
 	}
 }
