@@ -1,22 +1,41 @@
 import BaseController from './BaseController';
 import CONFIG from '../Config/Config';
 import GameMap from '../GameMap';
+import EntityContainer from '../EntityContainer';
+import Entity from '../Entity';
+import FireballController from './FireballController';
 
 export default class PlayerController extends BaseController {
 	constructor (player, key_bindings) {
 		super(player);
+		this.on_cooldown = false;
 		this.key_bindings = PlayerController.MakeKeyBindings(key_bindings);
 		this.bindKeyListeners();
+		this.cooldown_limit = 100;
+		this.cooldown_timer = 0;
 	}
 
 	handleActions (game_map) {
 		this.move(game_map);
-		this.attack(game_map);
+		this.checkAttackCooldown();
+		this.attack();
 	}
 
-	attack (game_map) {
-		if (this.key_bindings.attack_one.pressed) {
-			
+	attack () {
+		if (this.key_bindings.attack_one.pressed && !this.on_cooldown) {
+			this.on_cooldown = true;
+			FireballController.Fire(this.entity);
+		}
+	}
+
+	checkAttackCooldown () {
+		if (this.on_cooldown) {
+			if (this.cooldown_timer < this.cooldown_limit) {
+				this.cooldown_timer++;
+			} else {
+				this.cooldown_timer = 0;
+				this.on_cooldown = false;
+			}
 		}
 	}
 
