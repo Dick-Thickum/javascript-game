@@ -5,7 +5,6 @@ export default class Engine {
 		this.game_map = game_map;
 		this.controllers = this.makeControllers(entities);
 		this.renderer = renderer;
-		Entity.SetEntityList(this.entities);
 	}
 
 	addEntityController (entity_config) {
