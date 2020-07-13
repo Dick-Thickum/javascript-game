@@ -7,9 +7,14 @@ export default class Engine {
 		this.renderer = renderer;
 	}
 
-	addEntityController (entity_config) {
+	addEntity (entity_config) {
 		this.controllers.push(this.makeController(this.controllers.length, entity_config))
 	}
+
+    removeEntityById (id) {
+        const index = this.controllers.findIndex((controller) => controller.entity.id === id);
+        this.controllers.splice(index, 1);
+    }
 
 	makeControllers (entity_configs) {
     	return entity_configs.map((entity_config, id) => this.makeController(id, entity_config));
@@ -31,10 +36,18 @@ export default class Engine {
 			args[args.length-1].speed = entity_config.speed;
 		}
 
+        if (entity_config.hasOwnProperty('facing')) {
+            args[args.length-1].facing = entity_config.facing;
+        }
+
 		if (entity_config.hasOwnProperty('dimensions')) {
 			args.push(entity_config.dimensions.width);
 			args.push(entity_config.dimensions.height);
 		}
+
+        if (entity_config.hasOwnProperty('collision')) {
+            args.push(entity_config.collision);
+        }
 
 		return Entity.Make(...args);
     }
