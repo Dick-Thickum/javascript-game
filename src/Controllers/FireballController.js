@@ -9,20 +9,22 @@ export default class FireballController extends BaseController {
 	}
 
 	move (game_map) {
-		if (this.entity.movement.facing === CONFIG.FACING.UP) {
-			this.entity.move(0, -this.entity.movement.speed, CONFIG.FACING.UP);
-		}
-		if (this.entity.movement.facing === CONFIG.FACING.DOWN) {
-			this.entity.move(0, this.entity.movement.speed, CONFIG.FACING.DOWN);
-		}
-		if (this.entity.movement.facing === CONFIG.FACING.LEFT) {
-			this.entity.move(-this.entity.movement.speed, 0, CONFIG.FACING.LEFT);
-		}
-		if (this.entity.movement.facing === CONFIG.FACING.RIGHT) {
-			this.entity.move(this.entity.movement.speed, 0, CONFIG.FACING.RIGHT);
-		}
+		if (this.entity !== undefined) {
+			if (this.entity.movement.facing === CONFIG.FACING.UP) {
+				this.entity.move(0, -this.entity.movement.speed, CONFIG.FACING.UP);
+			}
+			if (this.entity.movement.facing === CONFIG.FACING.DOWN) {
+				this.entity.move(0, this.entity.movement.speed, CONFIG.FACING.DOWN);
+			}
+			if (this.entity.movement.facing === CONFIG.FACING.LEFT) {
+				this.entity.move(-this.entity.movement.speed, 0, CONFIG.FACING.LEFT);
+			}
+			if (this.entity.movement.facing === CONFIG.FACING.RIGHT) {
+				this.entity.move(this.entity.movement.speed, 0, CONFIG.FACING.RIGHT);
+			}
 
-		this.handleMoveCycle();
+			this.handleMoveCycle();
+		}
 	}
 
 	handleActions (game_map) {
