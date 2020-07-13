@@ -1,4 +1,6 @@
-export default class EntityContainer {
+import EntityConfigs from './Config/EntityConfigs';
+
+class EntityContainer {
 	static configs = [];
 
 	static Set (entity_configs = []) {
@@ -26,3 +28,7 @@ export default class EntityContainer {
 		EntityContainer.configs = EnityConfig.AddIds(entity_configs);
 	}
 }
+
+EntityContainer.Set(EntityConfigs);
+
+export default EntityContainer;
