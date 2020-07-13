@@ -4,9 +4,9 @@ import Sprite from './Sprite';
 export default class Entity {
 	static engine = {};
 
-	constructor (id, url, game_loop, movement, width, height) {
+	constructor (id, url, game_loop, movement, width, height, collision = true) {
 		this.id        = id;
-		this.collision = true;
+		this.collision = collision;
 		this.has_moved = false;
 		this.sprite    = Sprite.Make(url, game_loop, width, height);
 		this.movement  = Object.assign({
@@ -19,11 +19,13 @@ export default class Entity {
 	move (deltaX, deltaY, facing) {
 		let collisions     = false;
 
-		this.other_entities.forEach((entity) => {
-			if (Entity.CollidesWith(this, entity, deltaX, deltaY)) {
-				collisions = true;
-			}
-		});
+		if (this.collision === true) {
+			this.other_entities.forEach((entity) => {
+				if (Entity.CollidesWith(this, entity, deltaX, deltaY)) {
+					collisions = true;
+				}
+			});
+		}
 
 		if (!collisions) {
 			if (this.movement.position.x + deltaX > 0) {
@@ -37,6 +39,10 @@ export default class Entity {
 		
 		
 		this.movement.facing = facing;
+	}
+
+	get engine () {
+		return Entity.engine;
 	}
 
 	get other_entities () {
