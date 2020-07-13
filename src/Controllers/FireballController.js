@@ -38,6 +38,8 @@ export default class FireballController extends BaseController {
 			!GameMap.WithinBounds(this.entity, game_map, this.entity.movement.speed, 0)
 		) {
 			FireballController.engine.removeEntityById(this.entity.id);
+			FireballController.engine.renderer.clear();
+			FireballController.engine.renderer.render(FireballController.engine.entities);
 		}
 	}
 
@@ -69,5 +71,7 @@ export default class FireballController extends BaseController {
 		fireball_config.position = FireballController.GetStartPosition(from_entity);
 		fireball_config.facing = from_entity.movement.facing;
 		FireballController.engine.addEntity(fireball_config);
+		FireballController.engine.renderer.clear();
+		FireballController.engine.renderer.render(FireballController.engine.entities);
 	}
 }
