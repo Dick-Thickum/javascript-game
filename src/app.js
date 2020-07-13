@@ -23,5 +23,7 @@ window.onload = function () {
 
 	BaseController.SetEngine(engine);
 
+	window.engine = engine;
+
 	engine.start();
 };
