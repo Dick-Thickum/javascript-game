@@ -11,6 +11,8 @@ export default class GameMap {
 
 	static WithinBounds (entity, game_map, deltaX, deltaY) {
 		return (entity.movement.position.x + entity.sprite.dimensions.scaled_width  + deltaX) < game_map.dimensions.width &&
-			   (entity.movement.position.y + entity.sprite.dimensions.scaled_height + deltaY) < game_map.dimensions.height;
+			   (entity.movement.position.y + entity.sprite.dimensions.scaled_height + deltaY) < game_map.dimensions.height &&
+			   (entity.movement.position.x + deltaX) > 1 &&
+			   (entity.movement.position.y + deltaY) > 1
 	}
 }
