@@ -13,6 +13,7 @@ export default class Engine {
 
     removeEntityById (id) {
         const index = this.controllers.findIndex((controller) => controller.entity.id === id);
+        delete this.controllers[index].entity;
         this.controllers.splice(index, 1);
     }
 
