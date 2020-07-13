@@ -5,8 +5,7 @@ import EntityContainer from './EntityContainer';
 import Engine from './Engine';
 import EntityConfigs from './Config/EntityConfigs';
 import Entity from './Entity';
-
-EntityContainer.Set(EntityConfigs);
+import BaseController from './Controllers/BaseController';
 
 window.onload = function () {
 	document.querySelector('canvas').setAttribute('height', CONFIG.MAP_DIMENSIONS.HEIGHT + 'px');
@@ -16,11 +15,13 @@ window.onload = function () {
 
 	const renderer = Renderer.Make();
 
-	const entities = EntityContainer.All();
+	const entities = [EntityContainer.GetByName('red-player')];
 
 	const engine = Engine.Make(game_map, entities, renderer);
 
 	Entity.SetEngine(engine);
+
+	BaseController.SetEngine(engine);
 
 	engine.start();
 };
