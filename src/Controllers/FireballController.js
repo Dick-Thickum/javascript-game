@@ -44,7 +44,7 @@ export default class FireballController extends BaseController {
 	static GetStartPosition (from_entity) {
 		let x;
 		let y;
-		if (from_entity.movement.facing == CONFIG.FACING.UP) {
+		if (from_entity.movement.facing === CONFIG.FACING.UP) {
 			x = from_entity.movement.position.x + from_entity.sprite.dimensions.scaled_width / 3;
 			y = from_entity.movement.position.y - 17;
 		} else if (from_entity.movement.facing === CONFIG.FACING.DOWN) {
@@ -67,7 +67,6 @@ export default class FireballController extends BaseController {
 	static Fire (from_entity) {
 		const fireball_config = EntityContainer.GetByName('fireball');
 		fireball_config.position = FireballController.GetStartPosition(from_entity);
-		fireball_config.collision = false;
 		fireball_config.facing = from_entity.movement.facing;
 		FireballController.engine.addEntity(fireball_config);
 	}
