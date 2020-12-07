@@ -9,27 +9,25 @@ export default class FireballController extends BaseController {
 	}
 
 	move (game_map) {
-		if (this.entity !== undefined) {
-			if (this.entity.movement.facing === CONFIG.FACING.UP) {
-				this.entity.move(0, -this.entity.movement.speed, CONFIG.FACING.UP);
-			}
-			if (this.entity.movement.facing === CONFIG.FACING.DOWN) {
-				this.entity.move(0, this.entity.movement.speed, CONFIG.FACING.DOWN);
-			}
-			if (this.entity.movement.facing === CONFIG.FACING.LEFT) {
-				this.entity.move(-this.entity.movement.speed, 0, CONFIG.FACING.LEFT);
-			}
-			if (this.entity.movement.facing === CONFIG.FACING.RIGHT) {
-				this.entity.move(this.entity.movement.speed, 0, CONFIG.FACING.RIGHT);
-			}
-
-			this.handleMoveCycle();
+		if (this.entity.movement.facing === CONFIG.FACING.UP) {
+			this.entity.move(0, -this.entity.movement.speed, CONFIG.FACING.UP);
 		}
+		if (this.entity.movement.facing === CONFIG.FACING.DOWN) {
+			this.entity.move(0, this.entity.movement.speed, CONFIG.FACING.DOWN);
+		}
+		if (this.entity.movement.facing === CONFIG.FACING.LEFT) {
+			this.entity.move(-this.entity.movement.speed, 0, CONFIG.FACING.LEFT);
+		}
+		if (this.entity.movement.facing === CONFIG.FACING.RIGHT) {
+			this.entity.move(this.entity.movement.speed, 0, CONFIG.FACING.RIGHT);
+		}
+
+		this.handleMoveCycle();
 	}
 
 	handleActions (game_map) {
-		this.decay(game_map);
 		this.move(game_map);
+		this.decay(game_map);
 	}
 
 	decay (game_map) {
@@ -39,9 +37,7 @@ export default class FireballController extends BaseController {
 			!GameMap.WithinBounds(this.entity, game_map, -this.entity.movement.speed, 0) ||
 			!GameMap.WithinBounds(this.entity, game_map, this.entity.movement.speed, 0)
 		) {
-			FireballController.engine.removeEntityById(this.entity.id);
-			FireballController.engine.renderer.clear();
-			FireballController.engine.renderer.render(FireballController.engine.entities);
+			FireballController.engine.queueEvent('destroyEntity', [this.entity.id]);
 		}
 	}
 
@@ -72,8 +68,8 @@ export default class FireballController extends BaseController {
 		const fireball_config = EntityContainer.GetByName('fireball');
 		fireball_config.position = FireballController.GetStartPosition(from_entity);
 		fireball_config.facing = from_entity.movement.facing;
-		FireballController.engine.addEntity(fireball_config);
-		FireballController.engine.renderer.clear();
-		FireballController.engine.renderer.render(FireballController.engine.entities);
+		FireballController.engine.queueEvent(
+			'createEntity', [fireball_config]
+		);
 	}
 }

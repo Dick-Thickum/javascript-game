@@ -1,10 +1,15 @@
 import Entity from './Entity';
 
 export default class Engine {
+    static listeners = [];
+
+    static instance = {};
+
 	constructor (game_map, entities, renderer) {
 		this.game_map = game_map;
 		this.controllers = this.makeControllers(entities);
 		this.renderer = renderer;
+        this.events = [];
 	}
 
 	addEntity (entity_config) {
@@ -12,9 +17,7 @@ export default class Engine {
 	}
 
     removeEntityById (id) {
-        const index = this.controllers.findIndex((controller) => controller.entity.id === id);
-        delete this.controllers[index].entity;
-        this.controllers.splice(index, 1);
+        this.controllers = this.controllers.filter((controller) => controller.entity.id !== id);
     }
 
 	makeControllers (entity_configs) {
@@ -70,6 +73,8 @@ export default class Engine {
     //main game loop
 	run () {
         return () => {
+            this.handleEvents();
+
         	this.controllers.map((controller) => controller.handleActions(this.game_map));
 
         	this.renderer.render(this.entities);
@@ -78,6 +83,30 @@ export default class Engine {
 
 			window.requestAnimationFrame(this.run());
 		};
+    }
+
+    queueEvent (name, args) {
+        this.events.push({name, args});
+    }
+
+    static AddEventListener (name, handler) {
+        Engine.listeners.push({name, handler})
+    }
+
+    handleEvents () {
+        const length = this.events.length;
+        for (let index = 0; index < length; index++) {
+            let event = this.events.pop();
+            this.getHandlerByName(event.name).handler(...event.args);
+        }
+    }
+
+    getHandlerByName (name) {
+        const index = Engine.listeners.findIndex((listener) => listener.name === name);
+        if (index !== -1) {
+            return Engine.listeners[index];
+        }
+        throw new Error(`Undefined Event Handler Called: ${name}`);
     }
 
     start () {
@@ -101,5 +130,9 @@ export default class Engine {
 
     static Make (game_map, entities, renderer) {
     	return new Engine(game_map, entities, renderer);
+    }
+
+    static SetInstance (instance) {
+        Engine.instance = instance;
     }
 }

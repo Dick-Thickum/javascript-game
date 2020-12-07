@@ -17,13 +17,23 @@ window.onload = function () {
 
 	const entities = [EntityContainer.GetByName('red-player')];
 
+	Engine.AddEventListener('createEntity', (config) => {
+		Engine.instance.addEntity(config);
+	});
+
+	Engine.AddEventListener('destroyEntity', (id) => {
+		Engine.instance.removeEntityById(id);
+	});
+
 	const engine = Engine.Make(game_map, entities, renderer);
 
-	Entity.SetEngine(engine);
+	Engine.SetInstance(engine);
 
-	BaseController.SetEngine(engine);
+	Entity.SetEngine(Engine.instance);
 
-	window.engine = engine;
+	BaseController.SetEngine(Engine.instance);
 
-	engine.start();
+	window.engine = Engine.instance;
+
+	Engine.instance.start();
 };

@@ -7,6 +7,7 @@ export default class Renderer {
 	}
 
 	drawEntity (entity) {
+		this.context.save();
 		this.context.drawImage(
 			entity.sprite.image_map,
 			entity.sprite.cycle_loop[entity.sprite.cycle_loop_index] * entity.sprite.dimensions.width,
@@ -18,6 +19,7 @@ export default class Renderer {
 			entity.sprite.dimensions.scaled_width,
 			entity.sprite.dimensions.scaled_height
 		);
+		this.context.restore();
 	}
 
 	render (entities) {
